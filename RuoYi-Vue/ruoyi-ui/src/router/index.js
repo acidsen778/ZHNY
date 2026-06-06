@@ -141,6 +141,20 @@ export const dynamicRoutes = [
     ]
   },
   {
+    path: '/iot/device-view',
+    component: Layout,
+    hidden: true,
+    permissions: ['iot:device:view'],
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/iot/device/device-view'),
+        name: 'DeviceView',
+        meta: { title: '设备运行状态', activeMenu: '/iot/device' }
+      }
+    ]
+  },
+  {
     path: '/monitor/job-log',
     component: Layout,
     hidden: true,
