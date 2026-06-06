@@ -55,9 +55,9 @@
       </el-form-item>
     </el-form>
     <!--  底部  -->
-    <div class="el-login-footer">
+    <!-- <div class="el-login-footer">
       <span>{{ footerContent }}</span>
-    </div>
+    </div> -->
   </div>
 </template>
 
