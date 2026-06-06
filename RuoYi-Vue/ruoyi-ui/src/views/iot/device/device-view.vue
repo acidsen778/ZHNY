@@ -61,6 +61,11 @@ export default {
       return 4; // 5+ metrics
     }
   },
+  watch: {
+    '$route.query.deviceId'(newId) {
+      if (newId) this.loadDevice(newId);
+    }
+  },
   created() {
     const deviceId = this.$route.query.deviceId;
     if (deviceId) {
