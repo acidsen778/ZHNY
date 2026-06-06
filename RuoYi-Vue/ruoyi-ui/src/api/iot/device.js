@@ -71,23 +71,6 @@ export function deviceSynchronization(serialNumber) {
     })
 }
 
-// 获取设备ID列表
-export function getDeviceIds(groupId) {
-    return request({
-        url: '/iot/device/getDeviceIds/' + groupId,
-        method: 'get'
-    })
-}
-
-// 更新设备分组
-export function updateDeviceGroups(data) {
-    return request({
-        url: '/iot/device/updateDeviceGroups',
-        method: 'put',
-        data: data
-    })
-}
-
 // 根据设备编号查询设备详细
 export function getDeviceBySerialNumber(serialNumber) {
     return request({

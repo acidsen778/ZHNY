@@ -1,4 +1,3 @@
-@ -1,385 +0,0 @@
 <template>
 <div style="padding:6px;">
     <!-- 添加或修改通用物模型对话框 -->

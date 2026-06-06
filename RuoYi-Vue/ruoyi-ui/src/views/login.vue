@@ -55,9 +55,9 @@
       </el-form-item>
     </el-form>
     <!--  底部  -->
-    <!-- <div class="el-login-footer">
-      <span>{{ footerContent }}</span>
-    </div> -->
+<!--    <div class="el-login-footer">-->
+<!--      <span>{{ footerContent }}</span>-->
+<!--    </div>-->
   </div>
 </template>
 
@@ -72,7 +72,7 @@ export default {
   data() {
     return {
       title: process.env.VUE_APP_TITLE,
-      footerContent: defaultSettings.footerContent,
+      // footerContent: defaultSettings.footerContent,
       codeUrl: "",
       loginForm: {
         username: "admin",

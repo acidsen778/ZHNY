@@ -30,44 +30,44 @@ public class MqttConfig {
 
     @Bean
     public MqttClient mqttClient() {
-        // 澹版槑涓?final锛岀‘淇濆尶鍚嶅唴閮ㄧ被涓彲浠ュ畨鍏ㄧǔ瀹氬湴寮曠敤褰撳墠姝ｅ湪鍒涘缓鐨勮繖涓璞?
+        // 声明为 final，确保匿名内部类中可以安全稳定地引用当前正在创建的这个对象
         final MqttClient client;
         try {
-            // 1. 鍒濆鍖栧鎴风
+            // 1. 初始化客户端
             client = new MqttClient(hostUrl, clientId);
 
-            // 2. 閰嶇疆杩炴帴璁よ瘉鍙傛暟
+            // 2. 配置连接认证参数
             MqttConnectOptions options = new MqttConnectOptions();
             options.setCleanSession(true);
-            options.setAutomaticReconnect(true); // 鍚敤鏂嚎鑷姩閲嶈繛
+            options.setAutomaticReconnect(true); // 启用断线自动重连
             options.setUserName(username);
             options.setPassword(password.toCharArray());
-            options.setConnectionTimeout(10);    // 瓒呮椂鏃堕棿
-            options.setKeepAliveInterval(20);    // 蹇冭烦闂撮殧
+            options.setConnectionTimeout(10);    // 超时时间
+            options.setKeepAliveInterval(20);    // 心跳间隔
 
-            // 3. 閰嶇疆娑堟伅鍒拌揪鍚庣殑鍥炶皟鐩戝惉
+            // 3. 配置消息到达后的回调监听
             client.setCallback(new MqttCallbackExtended() {
                 @Override
                 public void connectComplete(boolean reconnect, String serverURI) {
-                    log.info("馃煝 [IoT] 鎴愬姛杩炴帴鑷?EMQX 娑堟伅鏈嶅姟鍣?({})", serverURI);
+                    log.info("🟢 [IoT] 成功连接至 EMQX 消息服务器 ({})", serverURI);
                     try {
-                        // 馃専 淇锛氱洿鎺ョ敤褰撳墠鍒濆鍖栫殑 client 瀹炰緥杩涜璁㈤槄锛屾嫆缁濇寰幆璋冪敤锛?
+                        // 🌟 修正：直接用当前初始化的 client 实例进行订阅，拒绝死循环调用！
                         client.subscribe(defaultTopic, 1);
-                        log.info("馃洶锔?[IoT] 宸叉垚鍔熻闃呯墿鑱旂綉涓撳睘涓婚: {}", defaultTopic);
+                        log.info("🛰️ [IoT] 已成功订阅物联网专属主题: {}", defaultTopic);
                     } catch (MqttException e) {
-                        log.error("鉂?[IoT] 璁㈤槄涓婚澶辫触: {}", e.getMessage());
+                        log.error("❌ [IoT] 订阅主题失败: {}", e.getMessage());
                     }
                 }
 
                 @Override
                 public void connectionLost(Throwable cause) {
-                    log.warn("馃敶 [IoT] 涓?EMQX 鏂紑杩炴帴锛岀郴缁熸鍦ㄨ嚜鍔ㄥ皾璇曢噸杩?..");
+                    log.warn("🔴 [IoT] 与 EMQX 断开连接，系统正在自动尝试重连...");
                 }
 
                 @Override
                 public void messageArrived(String topic, MqttMessage message) {
                     String payload = new String(message.getPayload());
-                    log.info("馃摜 [IoT] 鏀跺埌涓婃姤鏁版嵁 -> 涓婚: [{}], 瀛楄妭澶у皬: {}", topic, message.getPayload().length);
+                    log.info("📥 [IoT] 收到上报数据 -> 主题: [{}], 字节大小: {}", topic, message.getPayload().length);
                     IotDataProcessor.handleMessage(topic, payload);
                 }
 
@@ -76,12 +76,12 @@ public class MqttConfig {
                 }
             });
 
-            // 4. 鍚屾鍙戣捣杩炴帴
+            // 4. 同步发起连接
             client.connect(options);
             return client;
 
         } catch (MqttException e) {
-            log.error("馃挜 [IoT] 鍒濆鍖?MQTT 瀹㈡埛绔椂鍙戠敓涓ラ噸寮傚父: ", e);
+            log.error("💥 [IoT] 初始化 MQTT 客户端时发生严重异常: ", e);
         }
         return null;
     }

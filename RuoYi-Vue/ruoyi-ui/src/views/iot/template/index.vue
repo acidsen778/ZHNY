@@ -1,4 +1,3 @@
-@ -1,687 +0,0 @@
 <template>
   <div style="padding:6px;">
     <el-card v-show="showSearch" style="margin-bottom:5px;">
@@ -27,23 +26,23 @@
         <el-table-column label="标识符" align="center" prop="identifier" />
         <el-table-column label="只读" align="center" prop="" width="80">
           <template slot-scope="scope">
-            <dict-tag :options="dict.type.iot_yes_no" :value="scope.row.isReadonly" />
+            <dict-tag :options="dict.type.iot_yes_no" :value="scope.row.isReadonly + ''" />
           </template>
         </el-table-column>
         <el-table-column label="是否显示" align="center" prop="isMonitor" width="80">
           <template slot-scope="scope">
-            <dict-tag :options="dict.type.iot_yes_no" :value="scope.row.isMonitor" />
+            <dict-tag :options="dict.type.iot_yes_no" :value="scope.row.isMonitor + ''" />
           </template>
         </el-table-column>
 
         <el-table-column label="系统定义" align="center" prop="isSys" width="80">
           <template slot-scope="scope">
-            <dict-tag :options="dict.type.iot_yes_no" :value="scope.row.isSys" />
+            <dict-tag :options="dict.type.iot_yes_no" :value="scope.row.isSys + ''" />
           </template>
         </el-table-column>
         <el-table-column label="物模型类别" align="center" prop="type" width="100">
           <template slot-scope="scope">
-            <dict-tag :options="dict.type.iot_things_type" :value="scope.row.type" />
+            <dict-tag :options="dict.type.iot_things_type" :value="scope.row.type + ''" />
           </template>
         </el-table-column>
         <el-table-column label="数据类型" align="center" prop="datatype" width="80">
@@ -655,7 +654,6 @@ export default {
     },
     /** 添加参数 */
     addParameter() {
-      this.paramData = null;
       this.paramData = {
         index: -1,
         parameter: {}
